@@ -9,64 +9,8 @@
     "resources": {
         "media": [
             {
-                "file": "images/menu.png",
-                "menuIcon": true,
-                "name": "IMAGE_MENU",
-                "type": "png"
-            },
-            {
-                "file": "images/batterycharging.png",
-                "name": "IMAGE_BATTERYCHARGING",
-                "type": "png"
-            },
-            {
-                "file": "images/battery100.png",
-                "name": "IMAGE_BATTERY100",
-                "type": "png"
-            },
-            {
-                "file": "images/battery090.png",
-                "name": "IMAGE_BATTERY090",
-                "type": "png"
-            },
-            {
-                "file": "images/battery080.png",
-                "name": "IMAGE_BATTERY080",
-                "type": "png"
-            },
-            {
-                "file": "images/battery070.png",
-                "name": "IMAGE_BATTERY070",
-                "type": "png"
-            },
-            {
-                "file": "images/battery060.png",
-                "name": "IMAGE_BATTERY060",
-                "type": "png"
-            },
-            {
-                "file": "images/battery050.png",
-                "name": "IMAGE_BATTERY050",
-                "type": "png"
-            },
-            {
-                "file": "images/battery040.png",
-                "name": "IMAGE_BATTERY040",
-                "type": "png"
-            },
-            {
-                "file": "images/battery030.png",
-                "name": "IMAGE_BATTERY030",
-                "type": "png"
-            },
-            {
-                "file": "images/battery020.png",
-                "name": "IMAGE_BATTERY020",
-                "type": "png"
-            },
-            {
-                "file": "images/battery010.png",
-                "name": "IMAGE_BATTERY010",
+                "file": "images/background.png",
+                "name": "IMAGE_BACKGROUND",
                 "type": "png"
             },
             {
@@ -75,8 +19,64 @@
                 "type": "png"
             },
             {
-                "file": "images/background.png",
-                "name": "IMAGE_BACKGROUND",
+                "file": "images/battery010.png",
+                "name": "IMAGE_BATTERY010",
+                "type": "png"
+            },
+            {
+                "file": "images/battery020.png",
+                "name": "IMAGE_BATTERY020",
+                "type": "png"
+            },
+            {
+                "file": "images/battery030.png",
+                "name": "IMAGE_BATTERY030",
+                "type": "png"
+            },
+            {
+                "file": "images/battery040.png",
+                "name": "IMAGE_BATTERY040",
+                "type": "png"
+            },
+            {
+                "file": "images/battery050.png",
+                "name": "IMAGE_BATTERY050",
+                "type": "png"
+            },
+            {
+                "file": "images/battery060.png",
+                "name": "IMAGE_BATTERY060",
+                "type": "png"
+            },
+            {
+                "file": "images/battery070.png",
+                "name": "IMAGE_BATTERY070",
+                "type": "png"
+            },
+            {
+                "file": "images/battery080.png",
+                "name": "IMAGE_BATTERY080",
+                "type": "png"
+            },
+            {
+                "file": "images/battery090.png",
+                "name": "IMAGE_BATTERY090",
+                "type": "png"
+            },
+            {
+                "file": "images/battery100.png",
+                "name": "IMAGE_BATTERY100",
+                "type": "png"
+            },
+            {
+                "file": "images/batterycharging.png",
+                "name": "IMAGE_BATTERYCHARGING",
+                "type": "png"
+            },
+            {
+                "file": "images/menu.png",
+                "menuIcon": true,
+                "name": "IMAGE_MENU",
                 "type": "png"
             }
         ]
