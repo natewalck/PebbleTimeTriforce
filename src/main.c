@@ -40,19 +40,27 @@ static void tick_handler(struct tm *tick_time, TimeUnits units_changed) {
 }
 
 static void main_window_load(Window *window) {
+  // Setup the window layer
   Layer *window_layer = window_get_root_layer(window);
+  // Set the bounds for the main window layer
   GRect bounds = layer_get_bounds(window_layer);
 
+  // Set default bitmap image for battery indicator
   s_bitmap = gbitmap_create_with_resource(RESOURCE_ID_IMAGE_BATTERY100);
 
+  // Create bitmap layer within the bounds of the main window layer
   s_bitmap_layer = bitmap_layer_create(bounds);
+  // Apply the battery bitmap to the bitmap layer
   bitmap_layer_set_bitmap(s_bitmap_layer, s_bitmap);
+  // Align the bitmap the bottom of the bitmap layer bounds
   bitmap_layer_set_alignment(s_bitmap_layer, GAlignBottom);
+  // Set correct compositing mode based upon pebble type
 #ifdef PBL_PLATFORM_APLITE
   bitmap_layer_set_compositing_mode(s_bitmap_layer, GCompOpAssign);
 #elif PBL_PLATFORM_BASALT
   bitmap_layer_set_compositing_mode(s_bitmap_layer, GCompOpSet);
 #endif
+  // Add the battery bitmap layet to the main window layer
   layer_add_child(window_layer, bitmap_layer_get_layer(s_bitmap_layer));
   
   // Create GFont for Time Layer
@@ -65,6 +73,7 @@ static void main_window_load(Window *window) {
   int bg_window_size = 88;
   int textlayer_padding = 5;
 
+  // Setup time text and layer
   int time_text_y = bg_header_size + (bg_window_size / 2) - (time_max_size.h / 2) - textlayer_padding;
   
   s_time_layer = text_layer_create(GRect(7, time_text_y, 132, 88));
@@ -72,9 +81,10 @@ static void main_window_load(Window *window) {
   text_layer_set_text_color(s_time_layer, GColorWhite);
   text_layer_set_text(s_time_layer, "00:00");
 
-  //Apply to TextLayer
+  // Apply Time to TextLayer
   text_layer_set_font(s_time_layer, s_time_font);
   text_layer_set_text_alignment(s_time_layer, GTextAlignmentCenter);
+  
   // Add it as a child layer to the Window's root layer
   layer_add_child(window_get_root_layer(window), text_layer_get_layer(s_time_layer));
   
@@ -83,22 +93,29 @@ static void main_window_load(Window *window) {
 }
 
 static void main_window_unload(Window *window) {
+  // Destroy the bitmap layer
   bitmap_layer_destroy(s_bitmap_layer);
+  // Destroy the bitmap object
   gbitmap_destroy(s_bitmap);
   // Destroy TextLayer
   text_layer_destroy(s_time_layer);
 }
 
 static void init() {
+  // Create the main window
   s_main_window = window_create();
+  // Set fullscreen mode if old pebble SDK
 #ifdef PBL_SDK_2
   window_set_fullscreen(s_main_window, true);
 #endif
+  // Set the background color. First color is primary, fallback to second color if unsupported
   window_set_background_color(s_main_window, COLOR_FALLBACK(GColorBlack, GColorBlack));
+  // Setup the window handlers
   window_set_window_handlers(s_main_window, (WindowHandlers) {
     .load = main_window_load,
     .unload = main_window_unload,
   });
+  // Use the main window object
   window_stack_push(s_main_window, true);
 
   // Register with TickTimerService
@@ -106,6 +123,7 @@ static void init() {
 }
 
 static void deinit() {
+  // Kill the main window
   window_destroy(s_main_window);
 }
 
