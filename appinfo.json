@@ -4,7 +4,7 @@
         ""
     ],
     "companyName": "OS X Devops",
-    "longName": "Triforce Advanced",
+    "longName": "Triforce Time",
     "projectType": "native",
     "resources": {
         "media": [
@@ -65,6 +65,7 @@
             },
             {
                 "file": "images/battery100.png",
+                "menuIcon": true,
                 "name": "IMAGE_BATTERY100",
                 "type": "png"
             },
@@ -75,20 +76,18 @@
             },
             {
                 "file": "images/menu.png",
-                "menuIcon": true,
                 "name": "IMAGE_MENU",
                 "type": "png"
             }
         ]
     },
     "sdkVersion": "3",
-    "shortName": "Triforce",
+    "shortName": "TriforceTime",
     "targetPlatforms": [
         "aplite",
         "basalt"
     ],
-    "uuid": "172e5abf-0780-4f4f-8290-0c0e7e011746",
-    "versionCode": 1,
+    "uuid": "084c5bee-996a-4c36-b56a-3199d6419148",
     "versionLabel": "1.1",
     "watchapp": {
         "watchface": true
