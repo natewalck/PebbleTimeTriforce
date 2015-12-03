@@ -7,6 +7,7 @@ static TextLayer *s_time_layer;
 static TextLayer *s_date_layer;
 
 static GFont s_time_font;
+static GFont s_status_font;
 
 static uint8_t battery_percent;
 static bool battery_state;
@@ -32,10 +33,11 @@ static void update_time() {
   text_layer_set_text(s_time_layer, buffer);
 
   // Create buffer and write date into buffer
-//   static char date_text[] = "Xxxxxxxxx 00";
-//   strftime(date_text, sizeof(date_text), "%B %e", tick_time);
-//   // Set date text
-//   text_layer_set_text(s_date_layer, date_text);
+   static char date_text[] = "Xxxxxxxxx 00";
+//    strftime(date_text, sizeof(date_text), "%x", tick_time);
+   strftime(date_text, sizeof(date_text), "%a, %b %e", tick_time);
+   // Set date text
+   text_layer_set_text(s_date_layer, date_text);
 }
 
 static void battery_handler(BatteryChargeState new_state) {
@@ -147,6 +149,19 @@ static void main_window_load(Window *window) {
   
   // Add it as a child layer to the Window's root layer
   layer_add_child(window_get_root_layer(window), text_layer_get_layer(s_time_layer));
+
+  // Set the status font
+  s_status_font = fonts_get_system_font(FONT_KEY_GOTHIC_24_BOLD);
+  // Create Date Layer
+  s_date_layer = text_layer_create(GRect(8, 40, 128, 88));
+  text_layer_set_background_color(s_date_layer, GColorClear);
+  text_layer_set_text_color(s_date_layer, GColorWhite);
+  text_layer_set_text_alignment(s_date_layer, GTextAlignmentCenter);
+  text_layer_set_text(s_date_layer, "January 1, 1900");
+
+  // Set font for date layer
+  text_layer_set_font(s_date_layer, s_status_font);
+  layer_add_child(window_get_root_layer(window), text_layer_get_layer(s_date_layer));
 
   // Get the current battery level
 //   battery_handler(battery_state_service_peek());
