@@ -9,11 +9,6 @@
     "resources": {
         "media": [
             {
-                "file": "images/background.png",
-                "name": "IMAGE_BACKGROUND",
-                "type": "png"
-            },
-            {
                 "file": "images/battery000.png",
                 "name": "IMAGE_BATTERY000",
                 "type": "png"
@@ -65,7 +60,6 @@
             },
             {
                 "file": "images/battery100.png",
-                "menuIcon": true,
                 "name": "IMAGE_BATTERY100",
                 "type": "png"
             },
@@ -76,6 +70,7 @@
             },
             {
                 "file": "images/menu.png",
+                "menuIcon": true,
                 "name": "IMAGE_MENU",
                 "type": "png"
             }
@@ -87,8 +82,8 @@
         "aplite",
         "basalt"
     ],
-    "uuid": "084c5bee-996a-4c36-b56a-3199d6419148",
-    "versionLabel": "1.1",
+    "uuid": "3d40dd27-1429-4057-b202-1ea6f14b134b",
+    "versionLabel": "1.0",
     "watchapp": {
         "watchface": true
     }

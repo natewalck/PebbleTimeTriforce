@@ -1,7 +1,8 @@
 #include <pebble.h>
 
 static Window *s_main_window;
-static GBitmap *s_bitmap;
+static GBitmap *battery_image;
+static GBitmap *old_battery_image;
 static BitmapLayer *s_battery_layer;
 static TextLayer *s_time_layer;
 static TextLayer *s_date_layer;
@@ -44,12 +45,12 @@ static void battery_handler(BatteryChargeState new_state) {
   // Write to buffer and display
   battery_percent = new_state.charge_percent;
   battery_state = new_state.is_charging;
-
-  GBitmap *battery_image;
+  
+  old_battery_image = battery_image;
 
   if (battery_state)
   {
-    battery_image = gbitmap_create_with_resource(RESOURCE_ID_IMAGE_BATTERYCHARGING);
+    battery_image = gbitmap_create_with_resource(RESOURCE_ID_IMAGE_BATTERY100);
   }
   else
   {
@@ -95,6 +96,7 @@ static void battery_handler(BatteryChargeState new_state) {
 
   bitmap_layer_set_bitmap(s_battery_layer, battery_image);
   layer_mark_dirty(bitmap_layer_get_layer(s_battery_layer));
+  gbitmap_destroy(old_battery_image);
 }
 
 static void tick_handler(struct tm *tick_time, TimeUnits units_changed) {
@@ -108,12 +110,12 @@ static void main_window_load(Window *window) {
   GRect bounds = layer_get_bounds(window_layer);
 
   // Set default bitmap image for battery indicator
-  s_bitmap = gbitmap_create_with_resource(RESOURCE_ID_IMAGE_BATTERY100);
+  battery_image = gbitmap_create_with_resource(RESOURCE_ID_IMAGE_BATTERY100);
 
   // Create bitmap layer within the bounds of the main window layer
   s_battery_layer = bitmap_layer_create(bounds);
   // Apply the battery bitmap to the bitmap layer
-  bitmap_layer_set_bitmap(s_battery_layer, s_bitmap);
+  bitmap_layer_set_bitmap(s_battery_layer, battery_image);
   // Align the bitmap the bottom of the bitmap layer bounds
   bitmap_layer_set_alignment(s_battery_layer, GAlignBottom);
   // Set correct compositing mode based upon pebble type
@@ -164,7 +166,7 @@ static void main_window_load(Window *window) {
   layer_add_child(window_get_root_layer(window), text_layer_get_layer(s_date_layer));
 
   // Get the current battery level
-//   battery_handler(battery_state_service_peek());
+  battery_handler(battery_state_service_peek());
   
   // Make sure the time is displayed from the start
   update_time();
@@ -174,7 +176,7 @@ static void main_window_unload(Window *window) {
   // Destroy the bitmap layer
   bitmap_layer_destroy(s_battery_layer);
   // Destroy the bitmap object
-  gbitmap_destroy(s_bitmap);
+  gbitmap_destroy(battery_image);
   // Destroy TextLayer
   text_layer_destroy(s_time_layer);
 }
@@ -200,7 +202,7 @@ static void init() {
   tick_timer_service_subscribe(MINUTE_UNIT, tick_handler);
 
   // Subscribe to the Battery State Service
-//   battery_state_service_subscribe(battery_handler);
+  battery_state_service_subscribe(battery_handler);
 }
 
 static void deinit() {
