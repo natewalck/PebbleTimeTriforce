@@ -11,7 +11,9 @@ static GFont s_time_font;
 static GFont s_status_font;
 
 static uint8_t battery_percent;
+static uint8_t last_battery_percent;
 static bool battery_state;
+static bool was_just_charging;
 
 static void update_time() {
   // Get a tm structure
@@ -43,6 +45,7 @@ static void update_time() {
 
 static void battery_handler(BatteryChargeState new_state) {
   // Write to buffer and display
+  last_battery_percent = battery_percent;
   battery_percent = new_state.charge_percent;
   battery_state = new_state.is_charging;
   
@@ -50,53 +53,63 @@ static void battery_handler(BatteryChargeState new_state) {
 
   if (battery_state)
   {
-    battery_image = gbitmap_create_with_resource(RESOURCE_ID_IMAGE_BATTERY100);
+    battery_image = gbitmap_create_with_resource(RESOURCE_ID_IMAGE_BATTERYCHARGING);
+    bitmap_layer_set_bitmap(s_battery_layer, battery_image);
+    layer_mark_dirty(bitmap_layer_get_layer(s_battery_layer));
+    if (old_battery_image){
+      gbitmap_destroy(old_battery_image);
+    }
+    was_just_charging = true;
   }
   else
   {
-    switch(battery_percent) {
-      case 100:
-        battery_image = gbitmap_create_with_resource(RESOURCE_ID_IMAGE_BATTERY100);
-        break;
-      case 90:
-        battery_image = gbitmap_create_with_resource(RESOURCE_ID_IMAGE_BATTERY090);
-        break;
-      case 80:
-        battery_image = gbitmap_create_with_resource(RESOURCE_ID_IMAGE_BATTERY080);
-        break;
-      case 70:
-        battery_image = gbitmap_create_with_resource(RESOURCE_ID_IMAGE_BATTERY070);
-        break;
-      case 60:
-        battery_image = gbitmap_create_with_resource(RESOURCE_ID_IMAGE_BATTERY060);
-        break;
-      case 50:
-        battery_image = gbitmap_create_with_resource(RESOURCE_ID_IMAGE_BATTERY050);
-        break;
-      case 40:
-        battery_image = gbitmap_create_with_resource(RESOURCE_ID_IMAGE_BATTERY040);
-        break;
-      case 30:
-        battery_image = gbitmap_create_with_resource(RESOURCE_ID_IMAGE_BATTERY030);
-        break;
-      case 20:
-        battery_image = gbitmap_create_with_resource(RESOURCE_ID_IMAGE_BATTERY020);
-        break;
-      case 10:
-        battery_image = gbitmap_create_with_resource(RESOURCE_ID_IMAGE_BATTERY010);
-        break;
-      case 0:
-        battery_image = gbitmap_create_with_resource(RESOURCE_ID_IMAGE_BATTERY000);
-        break;
-      default:
-        battery_image = gbitmap_create_with_resource(RESOURCE_ID_IMAGE_BATTERY100);
-        break;
+    if (battery_percent != last_battery_percent || was_just_charging) {
+      was_just_charging = false;
+      switch(battery_percent) {
+        case 100:
+          battery_image = gbitmap_create_with_resource(RESOURCE_ID_IMAGE_BATTERY100);
+          break;
+        case 90:
+          battery_image = gbitmap_create_with_resource(RESOURCE_ID_IMAGE_BATTERY090);
+          break;
+        case 80:
+          battery_image = gbitmap_create_with_resource(RESOURCE_ID_IMAGE_BATTERY080);
+          break;
+        case 70:
+          battery_image = gbitmap_create_with_resource(RESOURCE_ID_IMAGE_BATTERY070);
+          break;
+        case 60:
+          battery_image = gbitmap_create_with_resource(RESOURCE_ID_IMAGE_BATTERY060);
+          break;
+        case 50:
+          battery_image = gbitmap_create_with_resource(RESOURCE_ID_IMAGE_BATTERY050);
+          break;
+        case 40:
+          battery_image = gbitmap_create_with_resource(RESOURCE_ID_IMAGE_BATTERY040);
+          break;
+        case 30:
+          battery_image = gbitmap_create_with_resource(RESOURCE_ID_IMAGE_BATTERY030);
+          break;
+        case 20:
+          battery_image = gbitmap_create_with_resource(RESOURCE_ID_IMAGE_BATTERY020);
+          break;
+        case 10:
+          battery_image = gbitmap_create_with_resource(RESOURCE_ID_IMAGE_BATTERY010);
+          break;
+        case 0:
+          battery_image = gbitmap_create_with_resource(RESOURCE_ID_IMAGE_BATTERY000);
+          break;
+        default:
+          battery_image = gbitmap_create_with_resource(RESOURCE_ID_IMAGE_BATTERY100);
+          break;
       }
+      bitmap_layer_set_bitmap(s_battery_layer, battery_image);
+      layer_mark_dirty(bitmap_layer_get_layer(s_battery_layer));
+      if (old_battery_image){
+        gbitmap_destroy(old_battery_image);
+      }
+    }
   }
-
-  bitmap_layer_set_bitmap(s_battery_layer, battery_image);
-  layer_mark_dirty(bitmap_layer_get_layer(s_battery_layer));
-  gbitmap_destroy(old_battery_image);
 }
 
 static void tick_handler(struct tm *tick_time, TimeUnits units_changed) {
